@@ -401,7 +401,7 @@ void updateLCD()
 
     lastLCD = millis();
 
-    lcd.clear();
+    //lcd.clear();
 
     // =========================
     // LINE 1
@@ -412,6 +412,8 @@ void updateLCD()
 
     lcd.print(phValue, 2);
 
+    lcd.print("      "); // xoá ký tự dư
+
     // =========================
     // WIFI STATUS
     // =========================
@@ -419,11 +421,11 @@ void updateLCD()
 
     if (wifiConnected)
     {
-        lcd.print("WiFi");
+        lcd.print("WiFi ");
     }
     else
     {
-        lcd.print("AP");
+        lcd.print("AP   ");
     }
 
     // =========================
@@ -568,6 +570,7 @@ bool connectWiFi(
 void resetWiFi()
 {
     lcd.clear();
+    
 
     lcd.setCursor(0, 0);
 

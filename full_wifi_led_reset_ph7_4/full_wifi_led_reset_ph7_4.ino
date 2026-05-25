@@ -6,6 +6,16 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
+
+
+#define BLYNK_TEMPLATE_ID "TMPL6qoqAAYlZ"
+#define BLYNK_TEMPLATE_NAME "esp32v1"
+#define BLYNK_AUTH_TOKEN "s21GGhaT-16tdHmXdBjIOtp4pWypsCBY"
+
+#include <BlynkSimpleEsp32.h>
+BlynkTimer timer;
+
+
 // =====================================================
 // LCD I2C
 // =====================================================
@@ -200,6 +210,11 @@ void setup()
     lcd.setCursor(0, 0);
     lcd.print("System Ready");
 
+
+    // 3 phut gui len server 1 lan
+    Blynk.config(BLYNK_AUTH_TOKEN);
+    timer.setInterval(180000L, sendToBlynk);
+
     delay(1000);
 }
 
@@ -249,6 +264,9 @@ void loop()
 
         sendData();
     }
+
+    Blynk.run();
+    timer.run();
 }
 
 // =====================================================
@@ -867,4 +885,16 @@ void sendData()
     Serial.println(response);
 
     http.end();
+}
+
+
+
+// SEND to blynk
+void sendToBlynk()
+{
+    if (WiFi.status() != WL_CONNECTED)
+        return;
+
+    Blynk.virtualWrite(V0, phValue);   // pH
+    Blynk.virtualWrite(V1, voltage);   // debug voltage (optional)
 }
